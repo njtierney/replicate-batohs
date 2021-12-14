@@ -1,0 +1,55 @@
+---
+title: Modelling from Thesis
+output: html_document
+---
+
+**Modelling**
+
+We construct four multilevel Bayesian hierarchical models. Each model predicts
+one of the four outcomes: lung function (FEV1\%), Body Mass Index (BMI), systolic
+blood pressure, and diastolic blood pressure. 
+
+Let $Y_{ij}$ be the $i^{th}$ individual's $j^{th}$ health observation, at a time
+day$_{ij}$ after their first visit. We assume that $Y_{ij}$ follows a normal distribution with mean $\mu_{ij}$ and variance $\sigma_y^2$. Let $\beta_{0i}$ 
+and $\beta_{di}$ be respectively the individual intercept and individual health trend coefficient 
+associated with the $j^{th}$ day for the $i^{th}$ person; these individual parameters are centered
+around an overall intercept $\beta_{0c}$ and an overall slope $\beta_{dc}$, 
+the effect of the number of days since arriving at the workplace. Thus
+$\beta_{di}$ is the linear
+trend over time for the health characteristics of interest for the $i^{th}$ individual, over and above the
+overall population effect. Let $\beta_{g}$ be the effect of being female (compared to being male); let $\beta_{s}$ be the effect of being a smoker (compared to a never smoker), and let $\sum_{k = 1}^{n_{\mathrm{exposure}}-1} \beta_k I(\mathrm{exposure}_{ij} = k)$ be the effect of a workplace exposure, where $I(.)$ indicates whether an individual $i$ at a visit $j$ is in exposure group $k$, with the baseline exposure group set to Administration. Thus the model for a particular health outcome is represented as:
+
+$$
+Y_{ij} \sim \mathcal{N}(\mu_{ij},\sigma^2_y)
+$$
+
+with 
+$$
+\mu_{ij}=\beta_{0i}+\beta_{di}\mathrm{day}_{ij}+\beta_g\mathrm{gender}_{ij}+\beta_{s}\mathrm{smoke}_{ij}+\beta_p\mathrm{dust}_{ij}+\sum_{k=1}^{n_{\mathrm{exposure}}-1}{\beta_k }I(\mathrm{exposure_{ij}}=k) 
+$$
+
+$$
+\beta_{0i} \sim N(\beta_{0c},\sigma_{0}^2)
+$$
+
+$$
+\beta_{di} \sim N(\beta_{dc},\sigma_{d}^2)
+$$
+
+
+for $i=1 \ldots n_{I}$, $j=1 \ldots n_{0i}$, $k=1 \ldots,n_E$, where $n_I$ is the total number of individuals, $n_{0i}$ is the number of observations for each individual, and $n_E$ is the number of exposure groups.
+
+In the absence of other information, all of the regression coefficients were allocated independent normal priors with a mean of 0 and a variance of $D_1 = 10^3$.
+
+$$
+\beta_{0c},\beta_{dc},\beta_{di},\beta_g,\beta_s,\beta_p,\beta_k \sim N(0,D_1)
+$$
+
+Priors on $\sigma_{0},\sigma_y,\sigma_{d}$ were set to a uniform distribution
+with bounds of zero and $D2$, where $D_2=100$ for BMI and FEV~1~\%, and $D_2=50$ for Systolic and Diastolic blood pressure. $D_2$ is intended to better reflect the variation in BMI and FEV~1~% compared to blood pressure. Note also that we do not recommend automatically choosing set values for the uniform, but to instead choose sensible bounds based on the problem at hand.
+
+$$
+\sigma_{y},\sigma_0,\sigma_{d}, \sim \mathrm{Uniform}(0,D_2)
+$$
+
+Note also that the priors used for the $\beta$ terms are proper priors, which produce a proper posterior. In some cases improper priors such as an infinite uniform prior might be used, but these are sometimes not valid choices (See @Hobert1996 and @Rubio2018 for more details). It is worthwhile to consider the choice of prior for the variance terms. Although we have used inverse gamma and uniform priors, other weakly informative priors could be considered, such as a half-t-prior (represented as a half-Cauchy) [@Gelman2006]. It is important to not automatically choose uniform or half-t-priors, but to explore options during model building.
