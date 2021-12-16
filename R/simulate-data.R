@@ -18,15 +18,22 @@ simulate_fev1 <- function(n_people = 10,
            sigma = runif(n = n(),
                          min = 5,
                          max = 10)) %>%
-    mutate(group = sample(
-      x = c("Admin",
+    mutate(
+      group = sample(
+        x = c("Admin",
             "Emergency",
             "Maintenance",
             "Technician",
             "Field",
             "Technology"),
-      size = 1
-    )) %>%
+        size = 1
+        ),
+      smoker = sample(
+        x = c("smoker",
+              "never_smoker"),
+        size = 1
+      )
+      ) %>%
     mutate(fev1_dist = dist_normal(mu = mu,
                                    sigma = sigma),
            fev1 = generate(fev1_dist, times = 1)) %>%

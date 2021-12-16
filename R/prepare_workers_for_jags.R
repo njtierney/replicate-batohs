@@ -9,6 +9,6 @@
 #' @export
 prepare_workers_for_jags <- function(workers) {
 
-  NULL
+  workers
 
 }
