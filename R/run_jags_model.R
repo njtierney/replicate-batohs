@@ -13,10 +13,10 @@ run_jags_model <- function(workers_jags,
                            n_chains = 4,
                            model_params,
                            jags_initial_values,
-                           n_iterations_adapt,
-                           n_iterations_burnin,
-                           n_iterations_model,
-                           n_thin) {
+                           n_iterations_adapt = 100,
+                           n_iterations_burnin = 100,
+                           n_iterations_model = 100,
+                           n_thin = 1) {
 
   glue("running model with {n_iterations_adapt} adaptive iterations")
 

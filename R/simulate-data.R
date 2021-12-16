@@ -29,8 +29,8 @@ simulate_fev1 <- function(n_people = 10,
         size = 1
         ),
       smoker = sample(
-        x = c("smoker",
-              "never_smoker"),
+        x = c(1,
+              0),
         size = 1
       )
       ) %>%
