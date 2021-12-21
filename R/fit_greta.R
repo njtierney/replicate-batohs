@@ -1,4 +1,14 @@
-df <- simulate_fev1(n_people = 20, max_visits = 12)
+df <- simulate_fev1(n_people = 100, max_visits = 12)
+
+df
+
+ggplot(df,
+       aes(x = time,
+           y = fev1,
+           group = id)) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(~group)
 
 # fit with greta
 library(greta)
@@ -8,9 +18,10 @@ sigma_t <- uniform(0, 100)
 sigma_y <- uniform(0, 100)
 beta_0c <- normal(0,100)
 beta_tc <- normal(0,100)
-# intercept <- normal(beta_0c, sigma_0, dim = n_distinct(df$id))
-intercept_raw <- normal(0, 1, dim = n_distinct(df$id))
-intercept <- beta_0c + intercept_raw * sigma_0
+intercept <- normal(beta_0c, sigma_0, dim = n_distinct(df$id))
+# trick for neal's funnel
+  # intercept_raw <- normal(0, 1, dim = n_distinct(df$id))
+  # intercept <- beta_0c + intercept_raw * sigma_0
 coef_time <- normal(beta_tc, sigma_t, dim = n_distinct(df$id))
 coef_smoke <- normal(0,100)
 sigma <- uniform(0, 100)
